@@ -1,6 +1,5 @@
+# Algoritmo húngaro
 
-
-# Devuelve el coste mínimo (para máximos negar los coeficientes)
 def matching(mat) :
     if len(mat) == 0 : return 0
     n = len(mat) + 1
