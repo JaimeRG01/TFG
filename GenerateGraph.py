@@ -1,7 +1,4 @@
-# Para testear métricas
-
-import random
-import BronKerbosch
+# Genera todos los grafos de 8 vértices con cliques de tamaño 4
 
 V = 8 # Vértices del grafo
 A = (V * (V-1)) // 2 # Posibles aristas
@@ -76,19 +73,10 @@ for g in range(N) : # Por cada grafo
 
 # Para serializar
 import pickle 
-''' 
-file = open("clique.txt", "wb") 
-pickle.dump(ret, file) 
-file.close() 
-'''
+
 with open('clique.txt', 'rb') as handle: 
     data = handle.read() 
-  
-print("Tipo antes : ", type(data)) 
-  
+
 d = pickle.loads(data) 
-  
-print("Tipo despues : ", type(d)) 
-#print(d) Cuidao que esto peta muchisimo 
 
 
