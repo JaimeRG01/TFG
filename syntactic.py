@@ -37,6 +37,13 @@ def generate_fun_clique(subsets) :
         res.append(f)
     return res
 
+
+generate_subset(N, 1, K, [])
+# prin(subsets)
+clique = generate_fun_clique(subsets)
+# print(clique)
+
+
 # Calcula cuántos literales de f están en g
 def common_literals(f, g) :
     res = 0
@@ -488,14 +495,12 @@ def compare_big_end_fun() :
 
 
 
-generate_subset(N, 1, K, [])
-# prin(subsets)
-clique = generate_fun_clique(subsets)
-# print(clique)
-print("Valor función objetivo: ", m(clique))
+
 
 
 '''LLAMAR A LO QUE SE NECESITE'''
+
+print("Valor función objetivo: ", m(clique))
 
 
 #simulate_circuit_with_not()
