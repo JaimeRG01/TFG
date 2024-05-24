@@ -1,4 +1,4 @@
-# Probar la métrica que cuenta cuántos grafos computa bien
+# Experimentos con la métrica semántica
 
 V = 8 # Vértices del grafo
 A = (V * (V-1)) // 2 # Posibles aristas
@@ -21,8 +21,10 @@ def clique_fun() :
     f = [0] * N
     for i in s_cliques : f[i] = 1
     return f
+
 print("Calculando la función de clique")
 clique = clique_fun()
+print("Función clique calculada")
 
 # Función que calcula la métrica
 def mu(f) :
@@ -30,48 +32,39 @@ def mu(f) :
     for i in range(N) :
         if f[i] == clique[i] : ret += 1
     return ret
-# devuelve el m(f and g)
+
+# devuelve m(f and g)
 def combAND(f, g) :
     ret = 0
     for i in range(N) :
         if (f[i] & g[i]) == clique[i] : ret += 1
     return ret
 
+# Compara funciones aleatorias y lo guarda en test_result.txt
+def compare_rand_fun() :
+    file = open("test_result.txt", "a")
+    test_cases = 10
+    for i in range(test_cases) :
+        fun_bin1 = [random.randint(0, 1) for _ in range(N)]
+        fun_bin2 = [random.randint(0, 1) for _ in range(N)]
+        fun_and = [fun_bin1[j] & fun_bin2[j] for j in range(N)]
+        print("aqui")
+        s1 = mu(fun_bin1)
+        s2 = mu(fun_bin2)
+        s3 = mu(fun_and)
+        file.write(str(s1) + " " + str(s2) + " " + str(s3) + "\n")
+        file.write(str(s3-s1) + " " + str(s3-s2) + "\n")
 
-'''
-Por ahora para cadena almaceno su puntuación y también la puntuación desspués del AND
+    file.close()
 
-
-
-file = open("test_result.txt", "a")
-test_cases = 10
-for i in range(test_cases) :
-    fun_bin1 = [random.randint(0, 1) for _ in range(N)]
-    fun_bin2 = [random.randint(0, 1) for _ in range(N)]
-    fun_and = [fun_bin1[j] & fun_bin2[j] for j in range(N)]
-    print("aqui")
-    s1 = mu(fun_bin1)
-    s2 = mu(fun_bin2)
-    s3 = mu(fun_and)
-    file.write(str(s1) + " " + str(s2) + " " + str(s3) + "\n")
-    file.write(str(s3-s1) + " " + str(s3-s2) + "\n")
-
-file.close()
-'''
-
-
-
-
-# Crea una función cercana a la función objetivo
-# Value es cuánto va a diferir la función de clique
-
+# Genera un conjunto aleatorio para calcular funciones p-cercanas
 def rand_values(value):
     difs = set()
     while len(difs) < value : 
         difs.add(random.randint(0, N-1))
     return difs
 
-
+# Compara funciones p-cercanas con el mismo p
 def compare_close_fun() :
     # 2^28 es lo máximo. Una forma de aproximarse es tomar porcentajes de ese valor. 
     # Con 50% ya hemos probado (es lo que sale con las funciones aleatorias)
@@ -114,6 +107,7 @@ def compare_close_fun() :
         per += 1
     file.close()
 
+# Compara funciones p-cercanas con diferente p
 def compare_close_fun_dif_values() :
     values = [N-round(N*i/100) for i in range(85,100)]
     pers = [i for i in range(85, 100)] # Porcentajes
@@ -153,6 +147,7 @@ def compare_close_fun_dif_values() :
     file.close()
 
 
-#compare_close_fun()
-compare_close_fun_dif_values()
-print("FIN")
+'''LLAMAR A LO QUE SE NECESITE'''
+# compare_close_fun()
+
+# compare_close_fun_dif_values()
