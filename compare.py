@@ -108,6 +108,7 @@ def compare_close_fun_dif() :
 
 
 
+# LLamar en función de lo que se quiera
 
-#compare_close_fun_eq()
-compare_close_fun_dif()
+# compare_close_fun_eq()
+# compare_close_fun_dif()
