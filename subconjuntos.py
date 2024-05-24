@@ -5,10 +5,12 @@ from random import sample
 import matplotlib.pyplot as plt
 from collections import deque
 
-N = 8 # nodos
+N = 8 # Vértices
 K = 4 # Tamaño del clique
 A = N * (N-1) // 2
 subsets = []
+
+
 def generate_subset(n, ini, sz, acc) : 
     if sz == 0: 
         subsets.append(acc.copy())
@@ -18,7 +20,7 @@ def generate_subset(n, ini, sz, acc) :
         acc.pop()
         generate_subset(n, ini+1, sz, acc)
 
-# Calcula la función booleana que calcula el cliqué
+# Genera la función booleana que computa el clique
 def generate_fun_clique(subsets) :
     res = []
     idx = [[0 for i in range(N+1)] for j in range(N+1)]
@@ -34,12 +36,6 @@ def generate_fun_clique(subsets) :
                 f.append(idx[s[i]][s[j]])
         res.append(f)
     return res
-
-generate_subset(N, 1, K, [])
-# En subsets está la función objetivo
-# prin(subsets)
-clique = generate_fun_clique(subsets)
-# print(clique)
 
 # Calcula cuántos literales de f están en g
 def common_literals(f, g) :
@@ -63,15 +59,12 @@ def m(f) :
     res = -matching(mat)
     return res
 
-
-print("Valor función objetivo: ", m(clique))
-
 # Comprueba si f es prefijo de g
 def is_prefix(f, g) :
     if len(f) > len(g) : return False
     else : return f == g[:len(f)]
 
-# Reduce f
+# Reduce f. CUIDADO CON LOS NOT
 def reduce(f, k = (K * (K-1) // 2)) :
     l = len(f)
     for i in range(l) :
@@ -83,16 +76,15 @@ def reduce(f, k = (K * (K-1) // 2)) :
     mark = [False] * l
     # Marcamos las que son demasiado largas
 
-    # ESTE FOR SOLO CUANDO NO HAY NOTS
-    for i in range(l) :
-        if len(f[i]) > k : mark[i] = True
+    '''ESTE FOR SOLO CUANDO NO HAY NOTS'''
+    # for i in range(l) :
+        # if len(f[i]) > k : mark[i] = True
     for i in range(l) :
         if mark[i] : continue
         for j in range(i+1, l) :
             if is_prefix(f[i], f[j]) : mark[j] = True
         res.append(f[i])
     return res  
-
 
 # Calcula f and g
 # Junta todos los pares de f y g 
@@ -105,7 +97,7 @@ def combAND(f, g, k = (K * (K-1) // 2)) :
 
     return reduce(aux)
 
-
+# Función aleatoria
 def get_rand_fun() :
     l = random.randint(1, len(clique))
     aux = sample(clique, l)
@@ -115,6 +107,7 @@ def get_rand_fun() :
         res.append(sample(i, l))
     return res
 
+# Función aleatoria de baja puntuación
 def get_rand_low_fun(punt) : 
     aux = sample(clique, punt)
     res = []
@@ -125,7 +118,7 @@ def get_rand_low_fun(punt) :
         if punt == 0: break
     return res
 
-
+# Función aleatoria con NOT
 def get_rand_fun_with_not() :
     l = random.randint(1, len(clique))
     aux = sample(clique, l)
@@ -140,6 +133,7 @@ def get_rand_fun_with_not() :
         for j in neg : res[i][j] *= -1
     return res
 
+# AND con NOT
 def combAND_with_not(f, g) :
     aux = []
     n1 = len(f); n2 = len(g)
@@ -158,7 +152,7 @@ def combAND_with_not(f, g) :
         if ok : ret.append(i)
     return reduce(ret)
 
-
+# Compara funciones aleatorias
 def compare_rand_fun() :
     iter = 100
     fig = plt.figure(figsize = (8,5))
@@ -184,6 +178,7 @@ def compare_rand_fun() :
     plt.legend()
     plt.show()
 
+# Compara funciones aleatorias con NOT
 def compare_rand_fun_with_not() :
     iter = 10000
     fig = plt.figure(figsize = (8,5))
@@ -212,7 +207,6 @@ def compare_rand_fun_with_not() :
     plt.title(title)
     plt.legend()
     plt.show()
-
 
 # Genera una función con m cláusulas donde cada cláusula tiene 
 # n variables y en total usa el mínimo número de variables posibles
@@ -246,30 +240,12 @@ def endogamic_fun(n, m, reverse = False) :
     res.sort()
     return res
 
-def compare_end_fun() :
-    iter = 1
-    fig = plt.figure(figsize = (8,5))
-    plt.ylim([0,350])
-    x = []
-    y = []
-    L = K * (K-1) // 4
-    for _ in range(iter) :
-        f = endogamic_fun(L, A//2)
-        g = endogamic_fun(L, A//2)
-        h = combAND(f, g)
-        m1 = m(f)
-        m2 = m(g)
-        m3 = m(h)
-        print(m1, m2, " -> ", m3)
-        x.append(m1); y.append(m3)
-        x.append(m2); y.append(m3)
-    plt.plot(x, y, 'ro')
-    plt.show()
-
+# OR de dos funciones
 def combOR(f, g) :
     res = f + g
     return reduce(res)
 
+# Simula el circuito
 def simulate_circuit() :
     # Variables
     S = [([[i]],1) for i in range(1, A+1)]
@@ -313,6 +289,7 @@ def simulate_circuit() :
     plt.plot(xOR, yOR, 'bo')
     plt.show()
 
+# Simula el circuito con NOT
 def simulate_circuit_with_not() :
     # Variables
     S1 = [([[i]],1) for i in range(1, A+1)]
@@ -364,16 +341,7 @@ def simulate_circuit_with_not() :
     plt.ylabel("$\mu_x(f)$")
     plt.show()
     
-
-
-
-
-#simulate_circuit_with_not()
-
-#compare_rand_fun_with_not()
-
-#compare_rand_fun()
-
+# Compara funciones endogámicas de poca puntuación
 def compare_low_end_fun() :
 
     M = len(clique)
@@ -445,6 +413,7 @@ def compare_low_end_fun() :
     plt.title("$f_{s,t}$ vs $f$")
     plt.show()
 
+# Compara funciones endogámicas de más puntuación
 def compare_big_end_fun() : 
     
     M = len(clique)
@@ -516,4 +485,23 @@ def compare_big_end_fun() :
     plt.show()
 
 
-compare_low_end_fun()
+
+
+
+generate_subset(N, 1, K, [])
+# prin(subsets)
+clique = generate_fun_clique(subsets)
+# print(clique)
+print("Valor función objetivo: ", m(clique))
+
+
+'''LLAMAR A LO QUE SE NECESITE'''
+
+
+#simulate_circuit_with_not()
+
+#compare_rand_fun_with_not()
+
+#compare_rand_fun()
+
+#compare_low_end_fun()
