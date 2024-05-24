@@ -1,14 +1,13 @@
 # Calcula la cota de V (funciones endogámicas)
+
 import sys
 from scipy.special import binom
 import matplotlib.pyplot as plt
 sys.set_int_max_str_digits(0)
 
-N = 10
+N = 100 # Vértices totales
 K = N//2
 A = (N * (N-1)) // 2
-MAXT = N
-
 
 # Encuentra v
 def bin_search(n, k) :
@@ -71,11 +70,3 @@ plt.xlabel("Número de vértices $(n)$")
 plt.ylabel("Máximo $\mathcal{V}$")
 plt.legend()
 plt.show()
-
-
-
-
-
-
-
-
