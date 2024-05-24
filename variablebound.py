@@ -1,10 +1,10 @@
-
+# Calcula la cota de V (funciones endogámicas)
 import sys
 from scipy.special import binom
 import matplotlib.pyplot as plt
 sys.set_int_max_str_digits(0)
 
-N = 100
+N = 10
 K = N//2
 A = (N * (N-1)) // 2
 MAXT = N
@@ -13,7 +13,7 @@ MAXT = N
 # Encuentra v
 def bin_search(n, k) :
     ini = 1
-    fin = binom(n, k)
+    fin = binom(n, k) # cota
     result = fin
     b1 = binom(n, k)
     b2 = binom(k, 2) // 2
@@ -28,10 +28,10 @@ def bin_search(n, k) :
             fin = mitad - 1
     return int(result)
 
-# Encuentra v
+# Encuentra v con NOT
 def bin_search_with_not(n, k) :
     ini = 1
-    fin = binom(n, k)
+    fin = binom(n, k) # cota
     result = fin
     b1 = binom(n, k)
     b2 = binom(k, 2) // 2
@@ -53,7 +53,10 @@ xref = []
 yref = []
 for n in range(N) :
     k = n // 2
-    v = bin_search_with_not(n, k)
+    '''LLAMAR AL QUE SE NECESITE'''
+    v = bin_search(n,k)
+    # v = bin_search_with_not(n, k)
+    
     print("Para grafos de", n, "vertices se obtiene v =", v)
     x.append(n)
     y.append(v)
@@ -65,7 +68,7 @@ plt.plot(xref, yref, 'b-', label = "Vértices totales")
 plt.plot(x,y, 'r-', label = 'Valores de $\mathcal{V}$')
 plt.title("Evolución de $\mathcal{V}$")
 plt.xlabel("Número de vértices $(n)$")
-plt.ylabel("Número de vértices $(n)$")
+plt.ylabel("Máximo $\mathcal{V}$")
 plt.legend()
 plt.show()
 
