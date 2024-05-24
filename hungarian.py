@@ -1,4 +1,4 @@
-# Algoritmo húngaro
+# Algoritmo húngaro, para calcular el problema de asignación
 
 def matching(mat) :
     if len(mat) == 0 : return 0
