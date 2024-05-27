@@ -39,7 +39,7 @@ def compare_close_fun_eq() :
     plt.plot(100, 0, 'o', color = 'purple', markersize = 7, label = "Objetivo", zorder = 4)
     plt.plot([x[-1],100], [y[-1], 0], '-', color = 'orange', label = "Salto detectado", zorder = 2)
     plt.xlabel("Porcentaje $p$ (%)")
-    plt.ylabel("Mínimo número de niveles para $f_p$")
+    plt.ylabel("Mínimo número de puertas para $f_p$")
     plt.title("Evolución tras comparar funciones $f_p$ del mismo tipo")
     plt.legend()
     plt.show()
@@ -110,5 +110,5 @@ def compare_close_fun_dif() :
 
 # LLamar en función de lo que se quiera
 
-# compare_close_fun_eq()
+compare_close_fun_eq()
 # compare_close_fun_dif()
